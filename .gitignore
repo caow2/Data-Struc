@@ -29,3 +29,5 @@ bin/
 .settings/
 .recommenders
 .classpath
+
+.DS_Store
