@@ -18,7 +18,7 @@ public class Node<E> {
 		return value.toString();
 	}
 	
-	public static String toString(Node<Integer> head) {
+	public static String toString(Node head) {
 		StringBuilder sb = new StringBuilder("[");
 		Node<Integer> temp = head;
 		while(temp != null) {
