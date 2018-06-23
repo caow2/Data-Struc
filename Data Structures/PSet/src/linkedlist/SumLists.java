@@ -9,7 +9,7 @@ public class SumLists {
 		Node<Integer> headA = new Node<Integer>(1);
 		headA.append(2);
 		Node<Integer> headB = new Node<Integer>(0);
-		headB.append(1);
+		//headB.append(1);
 		//21 + 10 = 31
 		System.out.println(Node.toString(sumList(headA, headB)));
 		//System.out.println(Node.toString(sumList(headB, headA)));
