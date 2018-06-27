@@ -4,11 +4,11 @@ package list;
 public class LinkedList<E> {
 	//Node for LinkedLists
 	private class Node<E> {
-		Node prev;
+		Node<E> prev;
 		E value;
-		Node next;
+		Node<E> next;
 		
-		public Node(Node prev, Node next, E elem){
+		public Node(Node<E> prev, Node<E> next, E elem){
 			this.prev = prev;
 			this.value = elem;
 			this.next = next;
