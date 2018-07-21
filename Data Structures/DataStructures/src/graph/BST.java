@@ -1,40 +1,39 @@
 package graph;
 
-//Complete binary tree
+//Complete binary tree - children are also BST
 public class BST {
 	
-	int val;
-	BST left, right;
+	TreeNode root;
 	
 	public BST(int val) {
-		this.val = val;
+		root = new TreeNode(val);
 	}
 	
-	public static boolean search(BST bst, int val) {
-		if(bst == null)
+	public boolean search(TreeNode node, int val) {
+		if(node == null)
 			return false;	//base case
 		
-		if(val == bst.val)
+		if(val == node.val)
 			return true;
 		
-		if(bst.val > val)
-			return BST.search(bst.left, val);
+		if(node.val > val)
+			return search(node.left, val);
 		else
-			return BST.search(bst.right, val);
+			return search(node.right, val);
 	}
 	
-	public static BST add(BST bst, int val) {
-		if(bst == null)
-			bst = new BST(val);
-		else if(val < bst.val)
-			bst.left = BST.add(bst.left, val);
+	public TreeNode add(TreeNode node, int val) {
+		if(node == null)
+			node = new TreeNode(val);
+		else if(val < node.val)
+			node.left = add(node.left, val);
 		else
-			bst.right = BST.add(bst.right, val);
-		return bst;
+			node.right = add(node.right, val);
+		return node;
 	}
 	
 	//in order traversal print tree - left, root, right
-	public static void inOrder(BST root) {
+	public static void inOrder(TreeNode root) {
 		if(root == null)
 			return;
 		inOrder(root.left);
@@ -43,7 +42,7 @@ public class BST {
 	}
 	
 	//pre-order traversal print tree - root, left, right
-	public static void preOrder(BST root) {
+	public static void preOrder(TreeNode root) {
 		if(root == null)
 			return;
 		System.out.println(root.val);
@@ -52,7 +51,7 @@ public class BST {
 	}
 	
 	//post-order traversal print tree - left, right, root
-	public static void postOrder(BST root) {
+	public static void postOrder(TreeNode root) {
 		if(root == null)
 			return;
 		postOrder(root.left);
