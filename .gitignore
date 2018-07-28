@@ -31,3 +31,7 @@ bin/
 .classpath
 
 .DS_Store
+
+#IntelliJ
+*.idea
+*.iml
