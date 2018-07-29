@@ -162,30 +162,12 @@ public class Driver {
         g.DConnect(5, 6);
         System.out.println("Testing BFS for Graph");
         System.out.println(g);
-        StringBuilder sb = new StringBuilder();
-        HashSet<Integer> set = new HashSet<Integer>();
-        Queue<GraphNode> q = new LinkedList<GraphNode>();
-        System.out.println("Looking for path from 0 to 7: " + BFSGraph(g.get(0), 7, set, q, sb));
-        set = new HashSet<Integer>();
-        q = new LinkedList<GraphNode>();
-        sb = new StringBuilder();
-        System.out.println("Looking for path from 7 to 0: " + BFSGraph(g.get(7), 0, set, q, sb));
-        set = new HashSet<Integer>();
-        q = new LinkedList<GraphNode>();
-        sb = new StringBuilder();
-        System.out.println("Looking for 2 to 0: " + BFSGraph(g.get(2), 0, set, q, sb));
-        set = new HashSet<Integer>();
-        q = new LinkedList<GraphNode>();
-        sb = new StringBuilder();
-        System.out.println("Looking for 5 to 7: " + BFSGraph(g.get(5), 7, set, q, sb));
-        set = new HashSet<Integer>();
-        q = new LinkedList<GraphNode>();
-        sb = new StringBuilder();
-        System.out.println("Looking for 3 to -1: " + BFSGraph(g.get(3), -1, set, q, sb));
-        set = new HashSet<Integer>();
-        q = new LinkedList<GraphNode>();
-        sb = new StringBuilder();
-        System.out.println("Looking for 0 to 5: " + BFSGraph(g.get(0), 5, set, q, sb));
+        System.out.println("Looking for path from 0 to 7: " + BFSGraph(g,0, 7));
+        System.out.println("Looking for path from 7 to 0: " + BFSGraph(g,7, 0));
+        System.out.println("Looking for 2 to 0: " + BFSGraph(g,2, 0));
+        System.out.println("Looking for 5 to 7: " + BFSGraph(g,5, 7));
+        System.out.println("Looking for 3 to -1: " + BFSGraph(g, 3,-1));
+        System.out.println("Looking for 0 to 5: " + BFSGraph(g, 0, 5));
 
     }
 
@@ -253,22 +235,51 @@ public class Driver {
     }
 
     //BFS - go through a node and all of its children -> recurse for each child
-    public static boolean BFSGraph(GraphNode start, Integer target, Set<Integer> set, Queue<GraphNode> q, StringBuilder sb) {
-        if(start == null) return false;
-        if(start.value == target) {
-            return true;
+    public static boolean BFSGraph(Graph graph, Integer start, Integer target) {
+        if (graph == null || graph.nodes.get(start) == null) return false;
+
+        Queue<GraphNode> q = new LinkedList<GraphNode>();
+        HashSet<Integer> set = new HashSet<Integer>();
+        q.add(graph.nodes.get(start));
+
+        while(! q.isEmpty()) {
+            GraphNode node = q.remove();
+            if(node.value == target)
+                return true;
+            set.add(node.value);
+            for(Integer i : node.children.keySet()) {
+                GraphNode n = node.children.get(i);
+                if(! set.contains(i))
+                    q.add(node.children.get(i));
+            }
         }
-        set.add(start.value);
-        for(Integer child : start.children.keySet()) {
-            if(! set.contains(child))
-                q.add(start.children.get(child));
+        return false;
+    }
+
+    public static boolean BFSMatrix(AdjacencyMatrix matrix, Integer start, Integer target) {
+        //same idea of BFS as with graph node
+        if(start > matrix.matrix.length || target > matrix.matrix.length || start < 0 || target < 0)
+            return false; //out of matrix bounds
+
+        HashSet<Integer> set = new HashSet<Integer>(); //track visited nodes
+        Queue<Integer> q = new LinkedList<Integer>();
+        q.add(start);
+
+        while(! q.isEmpty()) {
+            int num = q.remove();
+            if(set.contains(num))
+                continue;
+            set.add(num);
+            int[] node = matrix.matrix[num];
+            if(num == target)
+                return true;
+            //loop thru all children and add to q
+            for(int i = 0; i < node.length; i++) {
+                if(node[i] > 0)
+                    q.add(node[i]);
+            }
         }
-        if(q.isEmpty()) return false; //no more children to look thru
-        GraphNode next = q.remove();
-        if(BFSGraph(next, target, set, q, sb)) {
-            return true;
-        }
-        return false; //don't want to just return result from recursing b/c if set contains start value it returns false - we want to look thru other nodes too.
+        return false;
     }
 
 }
