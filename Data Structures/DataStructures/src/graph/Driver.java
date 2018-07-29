@@ -1,7 +1,9 @@
 package graph;
 
 import java.util.HashSet;
-
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Set;
 //Test class - also includes Depth first search and breadth first search implementations
 public class Driver {
     public static void main(String[] args) {
@@ -10,8 +12,8 @@ public class Driver {
         //testTrie();
         //testGraph();
         //testAdjMatrix();
-        //testDFSGraph();
-        testDFSMatrix();
+        testSearchGraph();
+        //testSearchMatrix();
     }
 
     public static void testBST() {
@@ -137,7 +139,7 @@ public class Driver {
         return false;
     }
 
-    public static void testDFSGraph() {
+    public static void testSearchGraph() {
         Graph g = new Graph();
         g.UDConnect(0,1);
         g.DConnect(0, 6);
@@ -154,7 +156,39 @@ public class Driver {
         System.out.println("Looking for 10: " + DFSGraph(g, 10));
         System.out.println("Looking for 3: " + DFSGraph(g, 3));
         System.out.println("Looking for 6: " + DFSGraph(g, 6));
+
+        g.DConnect(3, 5);
+        g.UDConnect(7, 6);
+        g.DConnect(5, 6);
+        System.out.println("Testing BFS for Graph");
+        System.out.println(g);
+        StringBuilder sb = new StringBuilder();
+        HashSet<Integer> set = new HashSet<Integer>();
+        Queue<GraphNode> q = new LinkedList<GraphNode>();
+        System.out.println("Looking for path from 0 to 7: " + BFSGraph(g.get(0), 7, set, q, sb));
+        set = new HashSet<Integer>();
+        q = new LinkedList<GraphNode>();
+        sb = new StringBuilder();
+        System.out.println("Looking for path from 7 to 0: " + BFSGraph(g.get(7), 0, set, q, sb));
+        set = new HashSet<Integer>();
+        q = new LinkedList<GraphNode>();
+        sb = new StringBuilder();
+        System.out.println("Looking for 2 to 0: " + BFSGraph(g.get(2), 0, set, q, sb));
+        set = new HashSet<Integer>();
+        q = new LinkedList<GraphNode>();
+        sb = new StringBuilder();
+        System.out.println("Looking for 5 to 7: " + BFSGraph(g.get(5), 7, set, q, sb));
+        set = new HashSet<Integer>();
+        q = new LinkedList<GraphNode>();
+        sb = new StringBuilder();
+        System.out.println("Looking for 3 to -1: " + BFSGraph(g.get(3), -1, set, q, sb));
+        set = new HashSet<Integer>();
+        q = new LinkedList<GraphNode>();
+        sb = new StringBuilder();
+        System.out.println("Looking for 0 to 5: " + BFSGraph(g.get(0), 5, set, q, sb));
+
     }
+
 
     //DFS with adjacency matrix - same approach as with DFSGraph
     //This time, see if two nodes are connected
@@ -196,7 +230,7 @@ public class Driver {
         return false;
     }
 
-    public static void testDFSMatrix() {
+    public static void testSearchMatrix() {
         AdjacencyMatrix matrix = new AdjacencyMatrix(7);
         matrix.UDConnect(0,2);
         matrix.UDConnect(1, 4);
@@ -217,5 +251,25 @@ public class Driver {
         System.out.println("Looking for path 0 to 4: " + DFSMatrix(matrix, 0,4));  //false
         System.out.println("Looking for path 7 to 0: "+ DFSMatrix(matrix, 7,0));  //false
     }
+
+    //BFS - go through a node and all of its children -> recurse for each child
+    public static boolean BFSGraph(GraphNode start, Integer target, Set<Integer> set, Queue<GraphNode> q, StringBuilder sb) {
+        if(start == null) return false;
+        if(start.value == target) {
+            return true;
+        }
+        set.add(start.value);
+        for(Integer child : start.children.keySet()) {
+            if(! set.contains(child))
+                q.add(start.children.get(child));
+        }
+        if(q.isEmpty()) return false; //no more children to look thru
+        GraphNode next = q.remove();
+        if(BFSGraph(next, target, set, q, sb)) {
+            return true;
+        }
+        return false; //don't want to just return result from recursing b/c if set contains start value it returns false - we want to look thru other nodes too.
+    }
+
 }
 
