@@ -12,8 +12,8 @@ public class Driver {
         //testTrie();
         //testGraph();
         //testAdjMatrix();
-        testSearchGraph();
-        //testSearchMatrix();
+        //testSearchGraph();
+        testSearchMatrix();
     }
 
     public static void testBST() {
@@ -221,7 +221,7 @@ public class Driver {
         matrix.DConnect(4,2);
         matrix.DConnect(4,6);
 
-        System.out.println("Testing adjacency matrix:");
+        System.out.println("Testing DFS for adjacency matrix:");
         System.out.println(matrix);
 
         System.out.println("Looking for path 1 to 5: " + DFSMatrix(matrix, 1,5)); // true 1->4->2->5
@@ -232,6 +232,17 @@ public class Driver {
         System.out.println("Looking for path 3 to 6: " + DFSMatrix(matrix, 3,6));  //true
         System.out.println("Looking for path 0 to 4: " + DFSMatrix(matrix, 0,4));  //false
         System.out.println("Looking for path 7 to 0: "+ DFSMatrix(matrix, 7,0));  //false
+
+        System.out.println("Testing BFS for adjacency matrix:");
+        System.out.println(matrix);
+        System.out.println("Looking for path 1 to 5: " + BFSMatrix(matrix, 1,5)); // true 1->4->2->5
+        System.out.println("Looking for path 3 to 5: " + BFSMatrix(matrix, 3,5)); // true 3->4->2->5
+        System.out.println("Looking for path -1 to 5: " + BFSMatrix(matrix, -1,5)); // false -1 not in matrix
+        System.out.println("Looking for path 7 to 5: " + BFSMatrix(matrix, 7,5));  //false
+        System.out.println("Looking for path 2 to 6: " + BFSMatrix(matrix, 2,6));  //false
+        System.out.println("Looking for path 3 to 6: " + BFSMatrix(matrix, 3,6));  //true
+        System.out.println("Looking for path 0 to 4: " + BFSMatrix(matrix, 0,4));  //false
+        System.out.println("Looking for path 7 to 0: "+ BFSMatrix(matrix, 7,0));  //false
     }
 
     //BFS - go through a node and all of its children -> recurse for each child
@@ -258,7 +269,7 @@ public class Driver {
 
     public static boolean BFSMatrix(AdjacencyMatrix matrix, Integer start, Integer target) {
         //same idea of BFS as with graph node
-        if(start > matrix.matrix.length || target > matrix.matrix.length || start < 0 || target < 0)
+        if(start >= matrix.matrix.length || target >= matrix.matrix.length || start < 0 || target < 0)
             return false; //out of matrix bounds
 
         HashSet<Integer> set = new HashSet<Integer>(); //track visited nodes
@@ -267,16 +278,14 @@ public class Driver {
 
         while(! q.isEmpty()) {
             int num = q.remove();
-            if(set.contains(num))
-                continue;
             set.add(num);
             int[] node = matrix.matrix[num];
             if(num == target)
                 return true;
             //loop thru all children and add to q
             for(int i = 0; i < node.length; i++) {
-                if(node[i] > 0)
-                    q.add(node[i]);
+                if(node[i] > 0 && ! set.contains(i))
+                    q.add(i);
             }
         }
         return false;
