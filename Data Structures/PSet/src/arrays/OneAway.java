@@ -5,9 +5,9 @@ import java.util.Hashtable;
 // Given 2 Strings, check if they are 1 or 0 away:
 // insert char, replace char, or remove a char
 public class OneAway {
-	public static void main(String[] arg) {
-		System.out.println(oneAway("bales", "pale"));
-	}
+    public static void main(String[] arg) {
+        System.out.println(oneAway("bales", "pale"));
+    }
 	
 	/*	BCR is O(N) - have to at go through at least one String
  	 	
@@ -26,42 +26,42 @@ public class OneAway {
  	  	
  	  	Optimal Approach - do the same checking, but since you know all the characters 
 	 */
-	
-	public static boolean oneAway(String first, String sec) {
-		//working with longer String is much easier
-		if(sec.length() > first.length()) {
-			String temp = first;
-			first = sec;
-			sec = temp;
-		}
-		
-		first = first.toLowerCase();
-		sec = sec.toLowerCase();
-		
-		if(Math.abs(first.length() - sec.length()) > 1 ) 
-			return false;
-		
-		Hashtable<Character, Integer> table = new Hashtable<Character, Integer>();
-		
-		for(char c : sec.toCharArray()) {
-			if(table.containsKey(c))
-				table.put(c, table.get(c) + 1);
-			else
-				table.put(c,  1);
-		}
-		
-		int diff = 0;
-		
-		for(char c : first.toCharArray()) {
-			if(table.get(c) == null || table.get(c) == 0)
-				diff++;
-			else
-				table.put(c, table.get(c) - 1);
-			
-			if(diff > 1)
-				return false;
-		}
-	
-		return true;	
-	}
+
+    public static boolean oneAway(String first, String sec) {
+        //working with longer String is much easier
+        if (sec.length() > first.length()) {
+            String temp = first;
+            first = sec;
+            sec = temp;
+        }
+
+        first = first.toLowerCase();
+        sec = sec.toLowerCase();
+
+        if (Math.abs(first.length() - sec.length()) > 1)
+            return false;
+
+        Hashtable<Character, Integer> table = new Hashtable<Character, Integer>();
+
+        for (char c : sec.toCharArray()) {
+            if (table.containsKey(c))
+                table.put(c, table.get(c) + 1);
+            else
+                table.put(c, 1);
+        }
+
+        int diff = 0;
+
+        for (char c : first.toCharArray()) {
+            if (table.get(c) == null || table.get(c) == 0)
+                diff++;
+            else
+                table.put(c, table.get(c) - 1);
+
+            if (diff > 1)
+                return false;
+        }
+
+        return true;
+    }
 }

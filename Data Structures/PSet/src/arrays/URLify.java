@@ -3,12 +3,12 @@ package arrays;
 //Replace all strings with %20. Assume string has enough space to hold extra chars and 
 //you're given the true length of the string
 public class URLify {
-	public static void main(String[] args) {
-		System.out.println(URLify("Apple Pie"));
-		System.out.println(URLifyInPlace("Apple Pie  ", 9));
-		System.out.println(URLifyInPlace("", 0));
-		System.out.println(URLifyInPlace2("   ", 1));
-	}
+    public static void main(String[] args) {
+        System.out.println(URLify("Apple Pie"));
+        System.out.println(URLifyInPlace("Apple Pie  ", 9));
+        System.out.println(URLifyInPlace("", 0));
+        System.out.println(URLifyInPlace2("   ", 1));
+    }
 	
 	/* 
 	 	BCR is O(N) - have to at least go through the string 
@@ -32,87 +32,84 @@ public class URLify {
 	 	and put them towards the end of the string.
 	 	O(N) time
 	 	*/
-	
-	public static String URLify(String str) {
-		int ws = 0;
-		
-		for (char c : str.toCharArray()) {
-			if(c == ' ')
-				ws++;
-		}
-		
-		int len = str.length() + (2 * ws);
-		char[] result = new char[len];
-		int index = 0;
-		
-		for(int pos = 0; pos < str.length(); pos++) {
-			if(str.charAt(pos) == ' ') {
-				result[index] = '%';
-				result[index + 1] = '2';
-				result[index + 2] = '0';
-				index += 3;
-			}
-			else {
-				result[index] = str.charAt(pos);
-				index++;
-			}
-		}
-		
-		return new String(result);
-	}
-	
-	public static String URLifyInPlace2(String str, int len) {
-		if(str.length() == 0)
-			return "";
-		
-		char[] c = str.toCharArray();
-		
-		int ws = (str.length() - len) / 2;
-		int index = str.length() - 1;
-		for(int pos = len - 1; pos >= 0; pos--) {
-			if(str.charAt(pos) == ' ') {
-				c[index] = '0';
-				c[index - 1] = '2';
-				c[index - 2] = '%';
-				index -= 3;
-			}
-			else {
-				c[index] = str.charAt(pos);
-				index--;
-			}
-		}
-		
-		return new String(c);
-		
-	}
-	
-	
-	public static String URLifyInPlace(String str, int len) {
-		if(str.length() == 0)
-			return "";
-		
-		//given string and true length, modify String in place
-		char[] arr = str.toCharArray();
-		int index = 0;
-		for(int pos = 0; pos < len; pos++) {
-			if(str.charAt(pos) == ' ') {
-				//shifting is a bottleneck and duplicated work
-				for(int indx = str.length() - 1; indx > index + 3; indx--) {
-					arr[indx] = arr[indx - 3];
-				}
-				
-				arr[index] = '%';
-				arr[index + 1] = '2';
-				arr[index + 2] = '0';
-				index += 3;
-			}
-			else {
-				arr[index] = str.charAt(pos);
-				index++;
-			}		
-		}
-		return new String(arr);
-	}
-	
-	
+
+    public static String URLify(String str) {
+        int ws = 0;
+
+        for (char c : str.toCharArray()) {
+            if (c == ' ')
+                ws++;
+        }
+
+        int len = str.length() + (2 * ws);
+        char[] result = new char[len];
+        int index = 0;
+
+        for (int pos = 0; pos < str.length(); pos++) {
+            if (str.charAt(pos) == ' ') {
+                result[index] = '%';
+                result[index + 1] = '2';
+                result[index + 2] = '0';
+                index += 3;
+            } else {
+                result[index] = str.charAt(pos);
+                index++;
+            }
+        }
+
+        return new String(result);
+    }
+
+    public static String URLifyInPlace2(String str, int len) {
+        if (str.length() == 0)
+            return "";
+
+        char[] c = str.toCharArray();
+
+        int ws = (str.length() - len) / 2;
+        int index = str.length() - 1;
+        for (int pos = len - 1; pos >= 0; pos--) {
+            if (str.charAt(pos) == ' ') {
+                c[index] = '0';
+                c[index - 1] = '2';
+                c[index - 2] = '%';
+                index -= 3;
+            } else {
+                c[index] = str.charAt(pos);
+                index--;
+            }
+        }
+
+        return new String(c);
+
+    }
+
+
+    public static String URLifyInPlace(String str, int len) {
+        if (str.length() == 0)
+            return "";
+
+        //given string and true length, modify String in place
+        char[] arr = str.toCharArray();
+        int index = 0;
+        for (int pos = 0; pos < len; pos++) {
+            if (str.charAt(pos) == ' ') {
+                //shifting is a bottleneck and duplicated work
+                for (int indx = str.length() - 1; indx > index + 3; indx--) {
+                    arr[indx] = arr[indx - 3];
+                }
+
+                arr[index] = '%';
+                arr[index + 1] = '2';
+                arr[index + 2] = '0';
+                index += 3;
+            } else {
+                arr[index] = str.charAt(pos);
+                index++;
+            }
+        }
+        return new String(arr);
+    }
+
+
 }
