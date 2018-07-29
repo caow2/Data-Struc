@@ -10,7 +10,8 @@ public class Driver {
         //testTrie();
         //testGraph();
         //testAdjMatrix();
-        testDFSGraph();
+        //testDFSGraph();
+        testDFSMatrix();
     }
 
     public static void testBST() {
@@ -100,7 +101,8 @@ public class Driver {
         System.out.println(matrix);
     }
 
-    //Depth First Search
+    //Depth First Search - doesn't randomize starting node since in for each loop
+    //See if node exists
     public static boolean DFSGraph(Graph graph, Integer value) {
         //Pick arbitary node -> for each loop. Loop thru all nodes of graph and the children of each node.
         //if encounter a node we've already seen - skip it because we examined all of its children already too
@@ -152,7 +154,68 @@ public class Driver {
         System.out.println("Looking for 10: " + DFSGraph(g, 10));
         System.out.println("Looking for 3: " + DFSGraph(g, 3));
         System.out.println("Looking for 6: " + DFSGraph(g, 6));
+    }
 
+    //DFS with adjacency matrix - same approach as with DFSGraph
+    //This time, see if two nodes are connected
+    public static boolean DFSMatrix(AdjacencyMatrix matrix, Integer a, Integer b) {
+        HashSet<Integer> set = new HashSet<Integer>();
+        if(a >= matrix.matrix.length || a < 0 || b < 0 || b >= matrix.matrix.length)
+            return false; //path won't exist if one of them doesn't exist in matrix
+
+        int[] row = matrix.matrix[a];
+        for(int i = 0; i < row.length; i++) {
+            if(row[i] > 0){
+                if(i == b)
+                    return true;
+                if(set.add(i)) {
+                    if(DFSMatrixHelper(matrix, i, b, set))
+                        return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    //look thru children
+    private static boolean DFSMatrixHelper(AdjacencyMatrix matrix, Integer a, Integer b, HashSet<Integer> set) {
+        //we're given an array representing a row and it's children
+        if(a >= matrix.matrix.length || a < 0 || b < 0 || b >= matrix.matrix.length)
+            return false;
+        int[] row = matrix.matrix[a];
+        for(int i = 0; i < row.length; i++) {
+            if(row[i] > 0) {
+                if(i == b)
+                    return true;
+                if(set.add(i)) {
+                    if(DFSMatrixHelper(matrix,i , b, set))
+                        return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static void testDFSMatrix() {
+        AdjacencyMatrix matrix = new AdjacencyMatrix(7);
+        matrix.UDConnect(0,2);
+        matrix.UDConnect(1, 4);
+        matrix.UDConnect(2, 5);
+        matrix.DConnect(3,4);
+        matrix.DConnect(4,2);
+        matrix.DConnect(4,6);
+
+        System.out.println("Testing adjacency matrix:");
+        System.out.println(matrix);
+
+        System.out.println("Looking for path 1 to 5: " + DFSMatrix(matrix, 1,5)); // true 1->4->2->5
+        System.out.println("Looking for path 3 to 5: " + DFSMatrix(matrix, 3,5)); // true 3->4->2->5
+        System.out.println("Looking for path -1 to 5: " + DFSMatrix(matrix, -1,5)); // false -1 not in matrix
+        System.out.println("Looking for path 7 to 5: " + DFSMatrix(matrix, 7,5));  //false
+        System.out.println("Looking for path 2 to 6: " + DFSMatrix(matrix, 2,6));  //false
+        System.out.println("Looking for path 3 to 6: " + DFSMatrix(matrix, 3,6));  //true
+        System.out.println("Looking for path 0 to 4: " + DFSMatrix(matrix, 0,4));  //false
+        System.out.println("Looking for path 7 to 0: "+ DFSMatrix(matrix, 7,0));  //false
     }
 }
 
