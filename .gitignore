@@ -35,5 +35,5 @@ bin/
 #IntelliJ
 .idea/
 *.iml
-Data-Structure/out/
-./RemoteSystemsTempFiles/
+Data-Structures/out/test/PSet
+RemoteSystemsTempFiles/
