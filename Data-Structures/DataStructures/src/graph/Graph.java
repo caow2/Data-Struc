@@ -3,7 +3,7 @@ package graph;
 import java.util.HashMap;
 
 public class Graph {
-    HashMap<Integer, GraphNode> nodes = new HashMap<Integer, GraphNode>();
+    protected HashMap<Integer, GraphNode> nodes = new HashMap<Integer, GraphNode>();
 
     public Graph() {
 
@@ -54,5 +54,9 @@ public class Graph {
             sb.append(value.toString() + "\n");
         }
         return sb.toString();
+    }
+
+    public GraphNode getNode(int value) {
+        return nodes.get(value);
     }
 }

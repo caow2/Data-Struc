@@ -9,8 +9,8 @@ import java.util.Map;
 // If directed A->B, then A has child B
 // Assume unique nodes with unique values
 public class GraphNode {
-    Integer value;
-    Map<Integer, GraphNode> children;
+    protected Integer value;
+    protected Map<Integer, GraphNode> children;
 
     public GraphNode(int value) {
         this.value = value;
@@ -29,6 +29,10 @@ public class GraphNode {
         return children.remove(node.value, node);
     }
 
+    public Integer getValue() {
+        return value;
+    }
+
     public String toString() {
         StringBuilder sb = new StringBuilder(value + ": ");
         Iterator<Integer> it = children.keySet().iterator();
@@ -38,5 +42,9 @@ public class GraphNode {
                 sb.append(", ");
         }
         return sb.toString();
+    }
+
+    public Map<Integer, GraphNode> getChildren() {
+        return children;
     }
 }
