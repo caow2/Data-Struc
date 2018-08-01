@@ -27,21 +27,6 @@ public class ListOfDepths {
         }
     }
 
-    //BTree class - A BTree is just a root node and 2 children nodes
-    public static class BTNode {
-        int value;
-        boolean visited;
-        BTNode left, right;
-
-        public BTNode(int value) {
-            this.value = value;
-        }
-
-        public String toString() {
-            return "" + value;
-        }
-    }
-
     /* Since we have to access the nodes of the graph by the root and then its children in left to right fashion,
      * We can use a modified BFS approach.
      * Have a Queue to track the next element for BFS and add elems to the queue accordingly
