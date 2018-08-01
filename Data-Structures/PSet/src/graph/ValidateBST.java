@@ -1,4 +1,6 @@
 package graph;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 //Check if a Binary Tree is a BST
 //Assumes no dupes
@@ -13,7 +15,10 @@ public class ValidateBST {
         root.right.right = new BTNode(100);
         root.right.left = new BTNode(4);
         //root.right.left = new BTNode(2); //false
-        System.out.println(isBST(root));
+        //System.out.println(isBST(root));
+        //System.out.println(isBST2(root));
+        System.out.println(isBST3(root, null));
+
     }
 
     /* A binary search tree has the property that all of its left children are less than the root and all of the right children are greater than the root.
@@ -52,5 +57,53 @@ public class ValidateBST {
             return false;
 
         return checkRight(root.left, superRoot) && checkRight(root.right, superRoot);
+    }
+
+    /**
+     * Cleaner approach - use depth first search and insert values into an array
+     * Check if the current value is < last value
+     * Assumes no duplicates
+     * O(N) time to construct list and to loop thru it
+     * O(N) space
+     */
+    public static boolean isBST2(BTNode root) {
+        ArrayList<Integer> list = new ArrayList<Integer>();
+        construct(root, list);
+
+        for(int i = 1; i < list.size(); i++) {
+            if(list.get(i) < list.get(i - 1))
+                return false;
+        }
+        System.out.println(list);
+        return true;
+    }
+
+    //BFS traversal and add to arraylist
+    public static void construct(BTNode root, ArrayList<Integer> list) {
+        if(root == null) return;
+        construct(root.left, list);
+        list.add(root.value);
+        construct(root.right, list);
+    }
+
+    /**
+     * Alternatively, we don't even need an array -> since we're always comparing to the last element, we can just run BFS and have a reference to it
+     * O(N) time and O(1) space
+     */
+    public static boolean isBST3(BTNode root, BTNode previous) {
+        if(root == null) return true;
+        //run BFS - go all the way down to left first and then check root and then check right
+
+        if(! isBST3(root.left, previous))
+            return false;
+
+        if(previous != null && root.value < previous.value)
+            return false;   //only null until for processing the first node
+        previous = root;
+
+        if(! isBST3(root.right, previous))
+            return false;
+
+        return true;
     }
 }
