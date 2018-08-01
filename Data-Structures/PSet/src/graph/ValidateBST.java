@@ -17,7 +17,8 @@ public class ValidateBST {
         //root.right.left = new BTNode(2); //false
         //System.out.println(isBST(root));
         //System.out.println(isBST2(root));
-        System.out.println(isBST3(root, null));
+        //System.out.println(isBST3(root, null));
+        System.out.println(isBST4(root, null, null));
 
     }
 
@@ -104,6 +105,24 @@ public class ValidateBST {
         if(! isBST3(root.right, previous))
             return false;
 
+        return true;
+    }
+
+    /**
+     * Cleaner approach of initial algorithm that was proposed
+     * For every recursive check, we pass down a min and a max value to constrain the values within the tree
+     * The left side of the tree is constrained by [null, top root value] and the other side of the tree is constrained by [top root value, null]
+     * When checking the left binary tree, the rule has to be imposed too - all children to left of that is constrained by [null, root.left] and all children to right is constrained by
+     * [root.left, null] -> this is okay because we already checked that [null,root] is valid; in actuality constrained by [root.left, root]
+     */
+    public static boolean isBST4(BTNode root, Integer min, Integer max) {
+        if(root == null) return true; //nothing to compare
+
+        if((min != null && root.value < min) || (max != null && root.value > max))
+            return false;
+
+        if(!(isBST4(root.left, min, root.value)) || !(isBST4(root.right, root.value, max)))
+            return false;
         return true;
     }
 }
