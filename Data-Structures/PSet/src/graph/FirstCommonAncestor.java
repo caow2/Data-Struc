@@ -3,6 +3,7 @@ import java.util.HashSet;
 
 /**Find first common ancestor of 2 nodes in a binary tree.
  * Follow up -> avoid storing extra nodes in data structure
+ * Does not work for nodes that are not in tree.
  */
 public class FirstCommonAncestor {
     public static HashSet<Integer> set = new HashSet<Integer>();
@@ -33,8 +34,13 @@ public class FirstCommonAncestor {
         System.out.println(FCAImproved(root, root.right.right.left)); //1
         */
 
+        //To fix issue where it breaks if node is not in tree just add a check to the start of each one
+        //Or add a flag to the actual ancestor when we return it and check it in an if statement in a helper method.
         System.out.println(FCADFS(root.left, root.right, root)); //1
+        BTNode invalid = new BTNode(10);
         System.out.println(FCADFS(root.left.left, root.left, root)); //2
+        System.out.println(FCADFS(root.left.left, invalid, root)); //should be null
+        System.out.println(FCADFS(invalid, root.left, root)); //should be null
     }
 
     /**For 2 given nodes, let's assume they have a link to the parent, a list/map or children, and a value
@@ -52,7 +58,7 @@ public class FirstCommonAncestor {
      * O(log N) time since we are traversing up the tree, or O(D) where D is the depth of the tree since this isn't necessarily a complete BST
      * O(log N) space -> we're not storing every node. Just the ones along the path from a node to the root (in worst case).
      *
-     * Assume nodes in the tree are unique values.
+     * Assume nodes in the tree are unique values and nodes exist.
      */
 
     public static BTNode FCA(BTNode a, BTNode b ){
@@ -110,8 +116,14 @@ public class FirstCommonAncestor {
 
         if(left != null && right != null)
             return root;
-        if(left != null)
+        if(left != null)    //right is null
             return left;
         return right; //takes care of case of both null and right != null
+    }
+
+    public static boolean inTree(BTNode root, BTNode target) {
+        if(root == null) return false;
+        if(root == target) return true;
+        return inTree(root.left, target) || inTree(root.right, target);
     }
 }
