@@ -5,7 +5,7 @@ public class BTNode {
     int value;
     boolean visited;
     BTNode left, right;
-    BTNode parent; //used for sucessor problem
+    BTNode parent; //used for sucessor problem and FCA
     public BTNode(int value) {
         this.value = value;
     }
@@ -18,6 +18,16 @@ public class BTNode {
     public void addRight(BTNode node) {
         right = node;
         right.parent = this;
+    }
+
+    public void addLeft(int value) {
+        BTNode node = new BTNode(value);
+        this.addLeft(node);
+    }
+
+    public void addRight(int value) {
+        BTNode node = new BTNode(value);
+        this.addRight(node);
     }
 
     public String toString() {

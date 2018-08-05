@@ -153,14 +153,30 @@ public class BuildOrder {
     protected static class GraphNode {
         String value;
         HashMap<String, GraphNode> children = new HashMap<String, GraphNode>();
+        protected int incoming_edges = 0;
 
         public GraphNode(String value) {
             this.value = value;
         }
 
         public void addChild(GraphNode g) {
-            children.put(g.value, g);
+            children.put(g.value,g);
+            g.incoming_edges++;
+        }
+
+        public void removeChild(String s) {
+            if(children.containsKey(s)) {
+                GraphNode g = children.remove(s);
+                g.incoming_edges--;
+            }
         }
 
     }
+
+    /**Alternatively, another approach involves thinking about it like this:
+     * The graphnodes can keep track of the number of incoming edges.
+     * Find the ones with no incoming edges -> if none, that means we have no valid build order
+     * Remove all the outgoing projects from these nodes -> once they are built, it doesn't matter much.
+     * Find the next ones with no incoming edges -> if none and there are still dependencies/incoming edges -> no way to build system
+     */
 }
