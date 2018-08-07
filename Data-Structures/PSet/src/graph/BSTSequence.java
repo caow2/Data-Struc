@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class BSTSequence {
 
     public static void main(String[] args) {
-        
+
     }
 
     /**Idea is to recurse down to each child node, find all possible subsequences and append to a list,
@@ -31,6 +31,7 @@ public class BSTSequence {
                 weave(l, r , weaved, prefix);
             }
         }
+        return list;
     }
 
     /**Weaves together the lists in all possible ways while maintaining the specific weave order
