@@ -30,6 +30,12 @@ public class RobotInAGrid {
         System.out.println(findPathBF(grid));
         System.out.println(findPathDP(grid));
     }
+
+    /** CTCI Solution says runtime is O(2^(r+c)) because we make two choices at each step -> check bottom and check left
+     *
+     */
+
+
     /** Assume each grid[r][c] has a value -> 0 means cannot step on the grid -> invalid path.
      *                                        1 means it is a valid step
      *
