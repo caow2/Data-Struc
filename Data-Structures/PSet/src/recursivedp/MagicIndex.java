@@ -9,6 +9,9 @@ public class MagicIndex {
     public static void main(String[] args) {
         int[] arr = {-1, -2, 0, 3, 5};
         System.out.println(findMagicIndex(arr)); // 3
+
+        int[] arr2 = {-1, 1, 1, 4, 5};
+        System.out.println(findMagicIndexBF(arr2));
     }
 
     /** Brute Force solution - we can just scan the whole array and see if there's a magic index. If we've searched whole array and still
@@ -45,6 +48,33 @@ public class MagicIndex {
         return -1;
     }
 
-    /**Implement Follow Up */
+    /** Implement Follow Up
+     *  Consider our Binary Search approach. We assumed that values were distinct.
+     *  Since we have could have non distinct values now, if we modify the Binary Search:
+     *  if A[i] > i, a magic index could still exist on both sides of index i -> consider [-1, 1, 3, 3, 5]
+     *  if A[i] < i, we get the same situation -> consider [-1, 1, 1, 3, 5]
+     *
+     *  Therefore, if want to keep the same approach, we have to look on both halves of the midpoint each time.
+     *  By this, we would get O(N) since we never get trim down the area we are looking for a magic index -> just splitting it into pieces, until we finally get N pieces of size 1
+     *  [-1], [1], [3], [3], [5].
+     *
+     *  Consider this approach, it's easier to just do a linear search through the array and return the first magic index found or -1.
+     */
+    public static int findMagicIndexBF(int[] arr) {
+        if(arr.length == 0) return -1;
+
+        for(int i = 0; i < arr.length; i++) {
+            if(arr[i] == i)
+                return i;
+        }
+
+        return -1;
+    }
+
+
+    /** For the CTCI explanation - if we implement Binary Search recursively, we can easily extend that to the follow up question case
+     *  where we recursively search both sides of the midpoint.
+     *  In cases where the array is distinct, this will still give us O(N) since we always search both the left and right side of the midpoint -> same as BF.
+     */
 
 }
